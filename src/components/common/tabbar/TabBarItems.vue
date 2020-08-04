@@ -50,7 +50,7 @@ export default {
   width: 24px;
   height: 24px;
   vertical-align: middle;
-  margin-top: 3px;
-  margin-bottom: 2px;
+  margin-top: 4px;
+  margin-bottom: 3px;
 }
 </style>

@@ -19,6 +19,7 @@ export default {
     bottom: 0px;
     left: 0px;
     right: 0px;
-    background-color: rgba(161, 157, 157,.4);
+    background-color: rgb(235, 232, 232);
+    z-index: 999;
   }
 </style>
