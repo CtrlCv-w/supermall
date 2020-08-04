@@ -28,7 +28,8 @@
     },
     methods: {
       activeItem(index){
-        this.currentIndex=index
+        this.currentIndex=index;
+        this.$emit('tabClick',index)
       }
     },
   }
@@ -44,17 +45,17 @@
     height: 40px;
     line-height: 40px;
     position: relative;
-    margin: 1px 1%;
+    margin: 3px 1%;
     background-color: #fff;
     /* border-top: 1px solid rgba(100, 100, 100, .3); */
-    border-bottom: 3px solid rgba(104, 100, 100, 0.2);
+    border-bottom: 2px solid rgba(104, 100, 100, 0.2);
     border-radius: 8px;
   }
   .tab-control-item{
     flex: 1;
   }
   .tab-control-item span{
-    padding: 9px 20px;
+    padding: 10px 20px;
   }
   .tab-control-item.active span{
     color: #FF6884;

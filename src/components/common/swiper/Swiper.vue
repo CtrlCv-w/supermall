@@ -47,7 +47,7 @@ export default {
     return {
       swiperCounts: 0, //元素个数
       currentIndex: 1, // 当前的index
-      indiIndex:1, // 当前活跃的indicator标签
+      indiIndex: 1, // 当前活跃的indicator标签
       swiperWidth: 0, // swiper的宽度
       swiperStyle: {}, // swiper样式
       scrolling: false, // 是否正在滚动
@@ -108,11 +108,11 @@ export default {
       this.imgTransform(targetPosition);
 
       // 解决indicator活跃与动画绑定延迟
-      this.indiIndex=this.currentIndex;
-      if (this.indiIndex>=this.swiperCounts + 1) {
-        this.indiIndex=1
-      }else if (this.indiIndex<=0) {
-        this.indiIndex=this.swiperCounts
+      this.indiIndex = this.currentIndex;
+      if (this.indiIndex >= this.swiperCounts + 1) {
+        this.indiIndex = 1;
+      } else if (this.indiIndex <= 0) {
+        this.indiIndex = this.swiperCounts;
       }
       // 校检滚动后的位置
       this.checkPosition();
@@ -151,7 +151,6 @@ export default {
       window.clearInterval(this.timePlayer);
     },
 
-
     /*******/
     /**
      * 拖动事件
@@ -168,25 +167,29 @@ export default {
     },
     touchMove(event) {
       // 计算滑动的距离
-      this.endX=event.touches[0].pageX;
-      this.moveDistance=this.endX-this.startX;
+      this.endX = event.touches[0].pageX;
+      this.moveDistance = this.endX - this.startX;
       // 加入滑动动画
-      this.distance=this.moveDistance-(this.currentIndex*this.swiperWidth)
-      this.imgTransform(this.distance)
+      this.distance = this.moveDistance - this.currentIndex * this.swiperWidth;
+      this.imgTransform(this.distance);
     },
     touchEnd(event) {
       // 判断最后移动的距离是否超出设定值
-      if (this.moveDistance==0) {
-        return
-      }else if (this.moveDistance>0&&this.moveDistance>this.swiperWidth*this.moveRatio) {
-        this.currentIndex--
-      } else if(this.moveDistance<0&&-this.moveDistance>this.swiperWidth*this.moveRatio){
-        this.currentIndex++
-      };
+      if (this.moveDistance == 0) {
+        return;
+      } else if (
+        this.moveDistance > 0 && this.moveDistance > this.swiperWidth * this.moveRatio
+      ) {
+        this.currentIndex--;
+      } else if (
+        this.moveDistance < 0 && -this.moveDistance > this.swiperWidth * this.moveRatio
+      ) {
+        this.currentIndex++;
+      }
       // 移动至正确的位置
-      this.imgScroll(-this.currentIndex*this.swiperWidth);
+      this.imgScroll(-this.currentIndex * this.swiperWidth);
       // 重新开始定时器
-      this.startTimer()
+      this.startTimer();
     },
   },
 };

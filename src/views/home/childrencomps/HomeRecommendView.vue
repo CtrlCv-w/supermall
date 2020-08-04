@@ -27,7 +27,7 @@ export default {
 #recommend-view{
   width: 98%;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-content: center;
   background-color: #fff;
   border-bottom: 6px solid rgba(100, 100, 100, .15);
@@ -35,7 +35,8 @@ export default {
   border-radius: 10px;
 }
 #recommend-view>div{
-  flex: 1;
+  flex-shrink: 0;
+  width: 23%;
   padding-top: 15px;
 }
 #recommend-view a{
