@@ -21,9 +21,12 @@ body {
   font-size: 14px;
   user-select: none; /* 禁止用户鼠标在页面上选中文字/图片等 */
   -webkit-tap-highlight-color: transparent; /* webkit是苹果浏览器引擎，tap点击，highlight背景高亮，color颜色，颜色用数值调节 */
-  background: var(--color-background);
+  background: #f0eeee;
   color: var(--color-text);
   width: 100vw;
+  height: 100vh;
+  position: relative;
+  top: 0;
 }
 
 a {

@@ -1,6 +1,6 @@
 <template>
   <div id="swiper-box">
-    <div class="swiper" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd">
+    <div id="swiper" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd">
       <slot></slot>
     </div>
     <div class="indicator">
@@ -66,7 +66,7 @@ export default {
      */
     cycleImg() {
       // 绑定图片
-      let swiperEl = document.querySelector(".swiper");
+      let swiperEl = document.getElementById('swiper');
       let swiperEls = swiperEl.getElementsByClassName("swiper-items");
       // console.log(swiperEls);
       // 获取图片个数
@@ -199,11 +199,12 @@ export default {
 #swiper-box {
   overflow: hidden;
   position: relative;
-  border-radius: 5px 5px 12px 12px;
+  
 }
 
-.swiper {
+#swiper {
   display: flex;
+  height: 100%;
 }
 
 .indicator {

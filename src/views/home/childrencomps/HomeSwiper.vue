@@ -2,7 +2,7 @@
     <swiper v-if="homeBanners.length">
       <swiper-items v-for="(item,index) in homeBanners" :key="index">
         <a :href="item.link">
-          <img :src="item.image" alt="">
+          <img :src="item.image" alt="" @load="imgSwiperLoad">
         </a>
       </swiper-items> 
     </swiper>
@@ -22,10 +22,23 @@ export default {
       },
     }
   },
+  data(){
+    return {
+      setOut:false,
+    }
+  },
   components:{
     Swiper,
     SwiperItems,
-  }
+  },
+  methods: {
+    imgSwiperLoad(){
+      if (!this.setOut) {
+        this.$emit('imgSwiperLoad');
+        this.setOut=true;
+      }
+    }
+  },
 }
 </script>
 

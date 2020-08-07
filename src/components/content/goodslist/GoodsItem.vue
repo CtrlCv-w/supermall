@@ -1,7 +1,6 @@
 <template>
-  <div class="goods-item">
-    <a :href="goodsItem.link">
-      <img :src="goodsItem.show.img" alt="">
+  <div class="goods-item" @click="itemClick" v-if="Object.keys(goodsItem).length!==0">
+      <img v-lazy="showImage" alt="" @load="imgLoad">
       <div class="goods-info">
         <p>{{goodsItem.title}}</p>
         <span class="price">{{"¥"+goodsItem.price}}</span>
@@ -10,7 +9,6 @@
           <span>{{goodsItem.cfav}}</span>
         </span>
       </div>
-    </a>
   </div>
 </template>
 
@@ -24,7 +22,24 @@ export default {
         return {}
       }
     }
-  }
+  },
+  methods: {
+    // 解决图片未完全加载BetterScroll高度异常的bug
+    imgLoad(){
+      // 将图片加载完成后的事件发送至VUE实例对象(bus)中
+        this.$bus.$emit('imgLoad');
+    },
+
+    itemClick(){
+        return this.$router.push("/detail/"+this.goodsItem.iid) || this.$router.push("/detail/"+this.goodsItem.item_id)
+    }
+  },
+
+  computed: {
+    showImage(){
+      return this.goodsItem.image || this.goodsItem.show.img;
+    }
+  },
 }
 </script>
 
@@ -39,9 +54,15 @@ export default {
     /* padding-bottom: 45px; */
     margin: 6px 1.5%;
     vertical-align: middle;
+    border-bottom: 1.5px solid rgba(104, 100, 100, 0.2);
   }
   .goods-item img{
     width: 100%;
+  }
+  .goods-item img[lazy="loading"]{
+    margin: 40px 0px;
+    width: 20px;
+    height: 20px;
   }
   .goods-info{
     width: 100%;

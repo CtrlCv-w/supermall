@@ -5,20 +5,28 @@
         <span>购物街</span>
       </div>
     </nav-bar>
+    <tab-control 
+      :titleNav="['流行' , '新款' , '精选']" 
+      @tabClick="tabClick"
+      ref="tabcontrol1"
+      class="fixed" v-show="isFixed">
+      </tab-control>
 
     <scroll 
     class="wrapper" ref="scroll" 
     :probe-type="3" 
     :pull-up-load="true"
-    @showBtn="showBack"
-    @pull-up-load="showMore">
-      <home-swiper :homeBanners="homeBanners"></home-swiper>
+    @scroll="scroll"
+    @pull-up-load="showMore"
+    v-if="Object.keys(goods).length!==0">
+      <home-swiper :homeBanners="homeBanners" @imgSwiperLoad="imgSwiperLoad" class="homeSwiper"></home-swiper>
       <home-recommend :homeRecommends="homeRecommends"></home-recommend>
       <popular-view :popularLink="[]"></popular-view>
       <tab-control 
       :titleNav="['流行' , '新款' , '精选']" 
-      class="table-controls" 
-      @tabClick="tabClick">
+      @tabClick="tabClick"
+      ref="tabcontrol2"
+      :class="{change:isFixed}">
       </tab-control>
       <goods-list :goods="goods[currentGoods].list"></goods-list>
     </scroll>
@@ -44,6 +52,8 @@ import { getHomeMultidata, getHomeGoods } from "network/home.js";
 import Scroll from "components/common/scroll/Scroll";
 
 import BackTop from 'components/common/backtop/BackTop';
+// 导入SC高度刷新
+import {imgLoad} from '../../common/minix.js'
 
 export default {
   name: "Home",
@@ -57,7 +67,8 @@ export default {
     Scroll,
     BackTop,
   },
-
+  // 使用mixin内容
+  mixins:[imgLoad],
   data() {
     return {
       // 创建变量接收网络请求结果
@@ -70,11 +81,18 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] },
       },
-      // 创建变量保存点击的页面
+      // 保存点击的页面
       currentGoods: "pop",
 
-      // 创建变量判断回到顶部按钮的显示
-      isShowTop:false
+      // 判断回到顶部按钮的显示
+      isShowTop:false,
+
+      // 获取tab-control距离顶部的值
+      tabOffsetTop:0,
+      isFixed:false,
+
+      // 保存离开时的位置
+      saveY:0,
     };
   },
 
@@ -86,8 +104,15 @@ export default {
     this.showHomeGoods("sell");
   },
 
-  mounted() {
-
+  // 监听离开或进入时用户滑到的位置
+  deactivated() {
+    this.saveY=this.$refs.scroll.getScrollY();
+    // 取消监听图片加载=>高度刷新
+    this.$bus.$off('imgLoad',this.imgRefresh)
+  },
+  activated() {
+    this.$refs.scroll.scrollTo(0,this.saveY,200);
+    this.$refs.scroll.refresh();
   },
 
   methods: {
@@ -132,26 +157,36 @@ export default {
         case 2:
           this.currentGoods = "sell";
           break;
-      }
+      };
+      this.$refs.tabcontrol1.currentIndex=index;
+      this.$refs.tabcontrol2.currentIndex=index;
     },
 
-    // 返回首页
+    // 返回顶部
     backTop(){
       // 利用ref获取scroll内部的scroll对象,从而调用scroll对象内部的方法
-      this.$refs.scroll.scroll.scrollTo(0,0,500)
+      this.$refs.scroll.scrollTo(0,0,500)
     },
 
-    // 获取下一页商品请求
-    showBack(y){
-      // 判断返回首页按钮是否显示
-      this.isShowTop = -y > 1000;     
+     // 在轮播图加载完成后计算tab-control的位置
+    imgSwiperLoad(){
+      this.tabOffsetTop=this.$refs.tabcontrol2.$el.offsetTop;
     },
+    // 判断返回首页按钮是否显示/固定tab-control选择栏
+    scroll(y){
+      // 判断返回首页按钮是否显示
+      this.isShowTop = -y > 1000; 
+      // 判断tab-control是否吸顶
+      this.isFixed = -y > this.tabOffsetTop;
+    },
+
     // 加载更多商品
     showMore(){
      this.showHomeGoods(this.currentGoods)
-    //  图片加载完成后对高度进行刷新
-    this.$refs.scroll.scroll.refresh()
-    }
+     // 对BS的高度进行刷新
+     this.$refs.scroll.refresh()
+    },
+ 
   },
 };
 </script>
@@ -163,6 +198,7 @@ export default {
   background-color: #f0eeee;
   overflow: hidden;
   height: 100vh;
+  position: relative;
 }
 
 .nav-home {
@@ -178,11 +214,18 @@ export default {
   position: relative;
   height: 100%;
 }
-
-.wrpaper .table-controls {
+.homeSwiper{
+  border-radius: 8px 8px 10px 10px;
+}
+/* 改变显示的tabcontrol组件/并固定 */
+ .fixed {
   position: fixed;
-  top: 44px;
   z-index: 998;
-  /* border-bottom: none; */
+  margin-top: 0px;
+  top: 44px;
+} 
+/* 隐藏第一个组件 */
+.change{
+  visibility: hidden;
 }
 </style>
