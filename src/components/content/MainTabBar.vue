@@ -1,6 +1,6 @@
 
 <template>
-  <tab-bar>
+  <tab-bar class="tab-bar">
     <tab-bar-items path="/home" activeColor='#FF5777'>
       <img slot="item-icon" src="~assets/img/tabbar/home.svg" alt="">
       <img slot="item-icon-active" src="~assets/img/tabbar/home_active.svg" alt="">
@@ -37,5 +37,7 @@ export default {
 </script>
 
 <style>
-
+  .tab-bar{
+    border-top: 1px solid rgba(53, 52, 52, 0.143);
+  }
 </style>

@@ -191,12 +191,19 @@ import {getDetail,getRecommend,BaseInfo,ShopInfo,GoodsInfo,GoodsParams} from 'ne
       addCart(){
         // 获取购物车中展示的信息
         const product={};
+        product.count=1;
         product.image=this.topImages[0];
         product.title=this.baseInfo.title;
-        product,desc=this.baseInfo.desc;
-        product.price=this.baseInfo.lowNowPrice;
-        product.id=this.id
+        product.desc=this.baseInfo.desc;
+        product.price=this.baseInfo.nowPrice;
+        product.shop=this.shopInfo.name;
+        product.checked=false;
+        product.id=this.id;
         // 将商品添加至购物车(vuex)
+        this.$store.dispatch('addCart',product).then(()=>{
+          this.$toast.showMessage('加入购物车成功')
+        }
+        );
       }
     },
   }
