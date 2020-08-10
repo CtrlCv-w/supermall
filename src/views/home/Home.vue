@@ -205,8 +205,8 @@ export default {
   background-color: #ff8198;
   box-sizing: content-box;
   color: white;
-  letter-spacing: 2px;
-  font-size: 22px;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 /* 设置滚动组件的高度 */
