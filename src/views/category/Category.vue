@@ -4,7 +4,8 @@
       <div slot="center">商品分类</div>
     </nav-bar>
     <scroll>
-      <category-list :categories="categories"></category-list>
+      <category-list :categories="categories"
+                     @listClick="listClick"></category-list>
     </scroll>
     <scroll class="item-scroll" ref="scroll">
       <category-item :subCategories="showSubCategory"></category-item>
@@ -119,6 +120,10 @@ export default {
         break;
       }
     },
+    // 分类选择
+    listClick(index){
+      this._getSubCategory(index);
+    }
   }
 }
 </script>
@@ -136,5 +141,8 @@ export default {
     color: white;
     font-size: 16px;
     font-weight: bold;
+  }
+  .item-scroll{
+    padding: 15px 8px 15px 105px;
   }
 </style>
