@@ -33,8 +33,9 @@ export default {
 #user-info {
   background-color: #ff8198;
   padding: 15px;
-  margin-top: -5px;
   overflow: hidden;
+  border-radius: 5px;
+  margin: 0.5% 1%;
 }
 #user-info .privateImage {
   width: 60px;
