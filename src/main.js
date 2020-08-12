@@ -5,6 +5,13 @@ import store from './store'
 import VueLazyLoad from 'vue-lazyload'
 import FastClick from 'fastclick'
 import Toast from 'components/common/toast'
+// 导入字体图标
+import fontawesome from '@fortawesome/fontawesome'
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
+import solid from '@fortawesome/fontawesome-free-solid'
+import regular from '@fortawesome/fontawesome-free-regular'
+import brands from '@fortawesome/fontawesome-free-brands'
+
 //关闭vue在console中的默认提示
 Vue.config.productionTip = false
 Vue.use(VueLazyLoad,{
@@ -17,6 +24,11 @@ Vue.prototype.$bus=new Vue()
 FastClick.attach(document.body)
 // 使用弹窗
 Vue.use(Toast)
+// 使用字体图标
+fontawesome.library.add(solid)
+fontawesome.library.add(regular)
+fontawesome.library.add(brands)
+Vue.component('FontAwesomeIcon', FontAwesomeIcon)
 
 new Vue({
   router,
