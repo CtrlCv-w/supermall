@@ -37,7 +37,7 @@ export default {
 
   computed: {
     showImage(){
-      return this.goodsItem.image || this.goodsItem.show.img;
+      return this.goodsItem.img || this.goodsItem.image ||this.goodsItem.show.img ;
     }
   },
 }
@@ -46,7 +46,7 @@ export default {
 <style>
   .goods-item{
     overflow: hidden;
-    flex:none;
+    flex:0 0 auto;
     width: 46%;
     background-color: #fff;
     border-radius: 5px;

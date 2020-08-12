@@ -2,7 +2,6 @@
   <div id="bs-wrapper">
     <div class="bs-content">
       <slot></slot>
-      <span class="tip-info">正在努力加载啦~</span>
     </div>
   </div>
 </template>
@@ -74,14 +73,4 @@ export default {
 </script>
 
 <style scoped>
-.bs-content .tip-info {
-  z-index: -1;
-  position: absolute;
-  line-height: 30px;
-  background-color: #f0eeee;
-  bottom: -30px;
-  left: 0;
-  right: 0;
-  text-align: center;
-}
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="categories-list">
+  <scroll class="categories-list">
     <div v-for="(item, index) in categories" :key="index"
          class="item" :class="{active:currentIndex===index}"
          @click="listClick(index)">
@@ -7,14 +7,18 @@
         <span>{{item.title}}</span>
       </div>
     </div>
-  </div>
+  </scroll>
 </template>
 
 <script>
+import Scroll from 'components/common/scroll/Scroll'
   export default {
     name:'CategoryList',
     props:{
       categories:Array,
+    },
+    components:{
+      Scroll
     },
     data() {
       return {
@@ -33,20 +37,23 @@
 <style scoped>
   .categories-list{
     width: 100px;
-    position: fixed;
+    height: 100%;
+    background-color: #fff;
+    position: relative;
+    top: 0px;
     left: 0px;
-    z-index: 99;
   }
   .item{
     display: flex;
     justify-content: center;
     align-items: center;
     height: 45px;
+    width: 100px;
     background-color: rgb(218, 218, 218);
   }
   .item.active{
     font-weight: bold;
-    background-color: #f0eeee;
+    background-color: #fff;
     color: #ce5067;
     font-size: 15px;
   }

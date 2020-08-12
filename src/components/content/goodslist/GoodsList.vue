@@ -4,6 +4,7 @@
     v-for="(item, index) in goods" 
     :key="index" 
     :goodsItem="item"></goods-item>
+    <span class="tip-info">正在努力加载啦~</span>
   </div>
 </template>
 
@@ -37,4 +38,14 @@ export default {
     width: 98%;
     margin: 10px 1%;
   }
+  .tip-info {
+  z-index: -1;
+  position: absolute;
+  line-height: 30px;
+  background-color: #f0eeee;
+  bottom: -30px;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
 </style>

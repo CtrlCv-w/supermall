@@ -3,11 +3,9 @@
     <nav-bar class="nav-bar">
       <div slot="center">商品分类</div>
     </nav-bar>
-    <scroll>
-      <category-list :categories="categories"
-                     @listClick="listClick"></category-list>
-    </scroll>
-    <scroll class="item-scroll" ref="scroll">
+    <category-list :categories="categories"
+                   @listClick="listClick"></category-list>
+    <scroll id="item-scroll" ref="scroll">
       <category-item :subCategories="showSubCategory"></category-item>
       <tab-control :titleNav="['综合','新款','热销']" 
                    @tabClick="tabClick"></tab-control>
@@ -46,7 +44,7 @@ export default {
       categoryData:{},
       currentIndex:-1,
       // 推荐商品的显示
-      currentType:'gen',
+      currentType:'pop',
     }
   },
   created() {
@@ -55,13 +53,20 @@ export default {
   },
   computed: {
     showSubCategory(){
-      if(this.currentIndex==-1) return {}
+      if(this.currentIndex===-1) return []
       return this.categoryData[this.currentIndex].subCategories
     },
     showRecommends(){
-      if(this.currentIndex==-1) return {}
+      if(this.currentIndex===-1) return []
       return this.categoryData[this.currentIndex].recommends[this.currentType]
     }
+  },
+  activated() {
+    this.$refs.scroll.refresh();
+  },
+  deactivated() {
+    // 取消监听图片加载=>高度刷新
+    this.$bus.$off('imgLoad',this.imgRefresh)
   },
   methods: {
     // 获取分类菜单
@@ -70,14 +75,16 @@ export default {
       this.categories=result.data.data.category.list;
       for(let index in this.categories){
         this.categoryData[index]={
-          subCategories:{},
+          subCategories:[],
           recommends:{
-            'gen':[],//综合
+            'pop':[],//综合
             'new':[],//新品
-            'sale':[]//热销
+            'sell':[]//热销
           }
         }
       }
+      // 获取分类界面
+      this._getSubCategory(0)
     })
     },
     // 获取分类界面
@@ -87,13 +94,14 @@ export default {
       let maitKey=this.categories[index].maitKey;
       // 发送请求
       getSubCategory(maitKey).then((result) => {
-        this.categoryData[index].subCategories=result.data.data;
+        // 结果保存
+        this.categoryData[index].subCategories=result.data.data.list;
         // 对获取的分类界面进行记录?
         this.categoryData={...this.categoryData};
         // 获取推荐商品的数据
-        this._getRecommends('gen')
+        this._getRecommends('pop')
         this._getRecommends('new')
-        this._getRecommends('sale')
+        this._getRecommends('sell')
       })
     },
   // 获取推荐商品
@@ -101,8 +109,9 @@ export default {
     // 获取推荐商品的miniWallkey
     let miniWallkey=this.categories[this.currentIndex].miniWallkey;
     // 发送请求
-    getRecommends(type).then((result) => {
+    getRecommends(miniWallkey,type).then((result) => {
       this.categoryData[this.currentIndex].recommends[type]=result.data;
+      console.log(this.categoryData[this.currentIndex].recommends);
       this.categoryData={...this.categoryData}
     })
   },
@@ -110,13 +119,13 @@ export default {
   tabClick(index){
     switch (index) {
       case 0: 
-        this.currentType='gen';
+        this.currentType='pop';
         break;
       case 1: 
         this.currentType='new';
         break;
       case 2: 
-        this.currentType='sale';
+        this.currentType='sell';
         break;
       }
     },
@@ -131,18 +140,27 @@ export default {
 <style scoped>
   .category{
     position: relative;
-    height: 100%;
+    height: 100vh;
     padding-top: 44px;
     padding-bottom: 50px;
+    display: flex;
+    background-color: #fff;
   }
   .nav-bar{
-     background-color: #ff8198;
-    box-sizing: content-box;
+    background-color: #ff8198;
     color: white;
     font-size: 16px;
     font-weight: bold;
   }
-  .item-scroll{
-    padding: 15px 8px 15px 105px;
+  #item-scroll{
+    flex: 1 0 auto;
+    width: 73.3%;
+    height: 100%;
+    padding: 15px 2px 5px 15px;
+    background-color: #fff;
+    position: relative;
+    top: 0px;
+    right: 0px;
+    overflow: auto;
   }
 </style>
